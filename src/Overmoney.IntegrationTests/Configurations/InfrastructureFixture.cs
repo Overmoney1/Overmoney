@@ -28,6 +28,7 @@ public class InfrastructureFixture : IAsyncLifetime
     public async Task InitializeAsync()
     {
         _postgresContainer = new PostgreSqlBuilder()
+            .WithImage("postgres")
             .WithPortBinding(POSTGRES_PORT, true)
             .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("pg_isready"))
             .WithUsername("dev")
