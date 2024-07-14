@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Overmoney.DataAccess;
 
 namespace Overmoney.IntegrationTests.Configurations;
@@ -17,6 +18,13 @@ internal class ApiWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        Dictionary<string, string> values = new()
+        {
+            ["ConnectionStrings:Database"] = $"Host={_postgresHostname}:{_postgresPort};Database=overmoney;Username=dev;Password=dev;Timeout=300;CommandTimeout=300",
+            ["AutoMigrate"] = "true"
+        };
+        builder.UseConfiguration(new ConfigurationBuilder().AddInMemoryCollection(values!).Build());
+
         builder.ConfigureTestServices(services =>
         {
             var dbContext = services.FirstOrDefault(x => x.ServiceType.Name.Contains("DatabaseContext"));
