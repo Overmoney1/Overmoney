@@ -54,14 +54,6 @@ jobs:
     runs-on: self-hosted
     needs: build_api_docker_image
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          config-inline: |
-            [registry."registry-registry-1"]
-              http = true
-              insecure = true
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -71,10 +63,9 @@ jobs:
       - name: Load image
         run: |
           docker load --input /tmp/overmoney_api.tar
-          docker image ls -a   
       
       - name: Add image tag
-        run : docker tag overmoney_api:latest registry-registry-1:5000/overmoney_api
+        run : docker tag overmoney_api:latest localhost:5000/overmoney_api
 
       - name: Push image
-        run: docker push registry-registry-1:5000/overmoney_api
+        run: docker push localhost:5000/overmoney_api
