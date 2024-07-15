@@ -32,7 +32,7 @@ jobs:
             - name: Build and export Docker Image
               uses: docker/build-push-action@v6
               with:
-                context: .
+                context: ${{ env.PROJECT_NAME }}
                 file: ${{ env.DOCKER_FILE }}
                 tags: overmoney_api
                 outputs: type=docker,dest=/tmp/overmoney_api.tar
