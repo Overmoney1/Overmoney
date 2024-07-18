@@ -37,9 +37,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
+      - run: cd ${{ env.PROJECT_PORTAL_NAME }}
 
       - name: Install dependencies
-        run: npm install ${{ env.PROJECT_PORTAL_NAME }}
+        run: npm install
 
       - name: Build project
-        run: npm run build --production ${{ env.PROJECT_PORTAL_NAME }}
+        run: npm run build --production
