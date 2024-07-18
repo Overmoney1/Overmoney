@@ -39,7 +39,7 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
-        uses: npm install ${{ env.PROJECT_PORTAL_NAME }}
+        run: npm install ${{ env.PROJECT_PORTAL_NAME }}
 
       - name: Build project
-        uses: npm build --production ${{ env.PROJECT_PORTAL_NAME }}
+        run: npm build --production ${{ env.PROJECT_PORTAL_NAME }}
