@@ -29,6 +29,9 @@ jobs:
 
   build_portal:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PORTAL_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,8 +40,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-      - run: cd ${{ env.PROJECT_PORTAL_NAME }}
-
+          
       - name: Install dependencies
         run: npm install
 
