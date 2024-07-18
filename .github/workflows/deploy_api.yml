@@ -1,8 +1,13 @@
 name: build
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
+    paths:
+      - src/Overmoney.Api/**
+      - src/Overmoney.DataAccess/**
+      - src/Overmoney.Domain/**
 
 env:
   PROJECT_NAME: src/
@@ -72,3 +77,6 @@ jobs:
 
       - name: Push image
         run: docker push localhost:5000/overmoney_api
+
+      - name: Restart container
+        run: docker run -rm --name overmoney_update -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once overmoney_api
