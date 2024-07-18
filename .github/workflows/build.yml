@@ -42,4 +42,4 @@ jobs:
         run: npm install ${{ env.PROJECT_PORTAL_NAME }}
 
       - name: Build project
-        run: npm build --production ${{ env.PROJECT_PORTAL_NAME }}
+        run: npm run build --production ${{ env.PROJECT_PORTAL_NAME }}
