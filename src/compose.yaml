@@ -47,7 +47,7 @@ services:
             - overmoney
         ports:
             - 80:80
-            - 8089:8089
+            - 9102:9102
         volumes:
             - ./configs/nginx/default.conf:/etc/nginx/conf.d/default.conf
 
