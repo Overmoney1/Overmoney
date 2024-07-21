@@ -1,29 +1,48 @@
 name: build
-on: push
+on: [push, pull_request]
 
 env:
-    PROJECT_NAME: src/
-
+  PROJECT_NAME: src/
+  PROJECT_PORTAL_NAME: src/Overmoney.Portal/
 
 jobs:
+  build_and_test_api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    build-api:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
-            - name: Setup dotnet
-              uses: actions/setup-dotnet@v4
-              with:
-                dotnet-version: '8.0.x'
-            
-            - name: Dotnet restore
-              run: dotnet restore ${{ env.PROJECT_NAME }}
+      - name: Dotnet restore
+        run: dotnet restore ${{ env.PROJECT_NAME }}
 
-            - name: Dotnet build
-              run: dotnet build --no-restore ${{ env.PROJECT_NAME }}
+      - name: Dotnet build
+        run: dotnet build --no-restore ${{ env.PROJECT_NAME }}
 
-            - name: Run tests
-              run: dotnet test --no-restore ${{ env.PROJECT_NAME }}
+      - name: Run tests
+        run: dotnet test --no-restore ${{ env.PROJECT_NAME }}
 
+
+  build_portal:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PORTAL_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build --production

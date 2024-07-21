@@ -3,9 +3,14 @@ import type { LoginResponse } from "./models/auth/loginResponse";
 import type { UserProfile } from "./models/auth/profile";
 
 export class AuthClient {
+
+  readonly BASE_URL: string = import.meta.env.VITE_API_URL == "" 
+    ? "http://" + window.location.hostname + ":" + import.meta.env.VITE_API_PORT + "/"
+    : import.meta.env.VITE_API_URL;
+
   async loginUser(email: string, password: string): Promise<LoginResponse> {
     const response = await axios.post<LoginResponse>(
-      import.meta.env.VITE_API_URL +
+      this.BASE_URL +
         `Identity/login?useCookies=false&useSessionCookies=false`,
       { email, password }
     );
@@ -14,7 +19,7 @@ export class AuthClient {
 
   async getUserProfile(token: string): Promise<UserProfile> {
     const response = await axios.get<UserProfile>(
-      import.meta.env.VITE_API_URL + `users/profile`,
+      this.BASE_URL + `users/profile`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -26,7 +31,7 @@ export class AuthClient {
 
   async registerUser(email: string, password: string): Promise<number> {
     const response = await axios.post(
-      import.meta.env.VITE_API_URL + `Identity/register`,
+      this.BASE_URL + `Identity/register`,
       { email, password }
     );
     return response.status;
@@ -34,7 +39,7 @@ export class AuthClient {
 
   async createUserProfile(email: string): Promise<UserProfile> {
     const response = await axios.post<UserProfile>(
-      import.meta.env.VITE_API_URL + `users/profile`,
+      this.BASE_URL + `users/profile`,
       { email }
     );
     return response.data;
