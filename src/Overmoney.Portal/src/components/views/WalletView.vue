@@ -9,8 +9,6 @@
     </nav>
     <WalletList :wallets="wallets" @updateWallet="onUpdateWallet">
     </WalletList>
-    <CreateWalletModal :show="showModal" :currencies="currencies" @created="onCreateWallet"
-        @cancel="showModal = false" />
     <UpdateWalletModal :show="showUpdateModal" :currencies="currencies" @updated="updateWallet"
         :currentValue="walletToUpdate" @cancel="showUpdateModal = false" @removeWallet="onRemoveWallet" :disableRemove="disableRemove" />
 </template>

@@ -15,6 +15,9 @@ export const userSessionStore = defineStore("user", {
     userId(): number {
       return this.userContext!.userId;
     },
+    email(): string {
+      return this.userContext!.email;
+    },
     isAuthenticated(): boolean {
       //no token
       if (this.userContext === null || this.userContext === undefined) {
@@ -47,6 +50,7 @@ export const userSessionStore = defineStore("user", {
         this.userContext = {
           token: authResponse.accessToken,
           userId: profileResponse.id,
+          email: profileResponse.email,
           expiresOn: new Date(
             new Date().getTime() + authResponse.expiresIn * 1000
           ),

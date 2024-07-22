@@ -9,7 +9,13 @@ internal sealed class UserProfileEntity
     public UserProfileId Id { get; private set; } = null!;
     public string Email { get; private set; } = null!;
 
-    public UserProfileEntity( string email)
+    public UserProfileEntity(UserProfileId id, string email)
+    {
+        Email = email;
+        Id = id;
+    }
+
+    public UserProfileEntity(string email)
     {
         Email = email;
     }
@@ -18,6 +24,11 @@ internal sealed class UserProfileEntity
     {
 
     }
+    public void Update(string email)
+    {
+        Email = email;
+    }
+
 }
 
 internal sealed class UserEntityTypeConfiguration : IEntityTypeConfiguration<UserProfileEntity>

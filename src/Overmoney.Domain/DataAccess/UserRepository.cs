@@ -8,4 +8,5 @@ public interface IUserProfileRepository : IRepository
     Task DeleteByIdAsync(UserProfileId userId, CancellationToken cancellationToken);
     Task<UserProfile?> GetByEmailAsync(string email, CancellationToken token);
     Task<UserProfile?> GetByIdAsync(UserProfileId userId, CancellationToken token);
+    Task UpdateAsync(UserProfile userToUpdate, CancellationToken cancellationToken);
 }

@@ -57,4 +57,12 @@ internal sealed class UserProfileRepository : IUserProfileRepository
 
         return new UserProfile(user.Id, user.Email);
     }
+
+    public async Task UpdateAsync(UserProfile userToUpdate, CancellationToken cancellationToken)
+    {
+        var entity = new UserProfileEntity(userToUpdate.Id!, userToUpdate.Email);
+
+        _databaseContext.Update(entity);
+        await _databaseContext.SaveChangesAsync(cancellationToken);
+    }
 }

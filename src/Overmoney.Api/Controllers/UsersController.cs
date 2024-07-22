@@ -30,22 +30,6 @@ public class UsersController : BaseController
     }
 
     /// <summary>
-    /// Create new user profile
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns>User profile</returns>
-    [HttpPost]
-    [Route("profile")]
-    [AllowAnonymous]
-    [ProducesResponseType<UserProfile>(StatusCodes.Status201Created)]
-    public async Task<ActionResult<UserProfile>> CreateUserProfile(CreateUserProfileCommand command)
-    {
-        var response = await _mediator.Send(command);
-
-        return CreatedAtAction(nameof(GetUserProfile), response);
-    }
-
-    /// <summary>
     /// Get user profile
     /// </summary>
     /// <returns>User profile</returns>
@@ -76,6 +60,63 @@ public class UsersController : BaseController
         }
 
         return Ok(userProfile);
+    }
+
+    /// <summary>
+    /// Get user profile by Id
+    /// </summary>
+    /// <returns>User profile</returns>
+    [HttpGet]
+    [Route("profile/{userId}")]
+    [ProducesResponseType<UserProfile>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserProfile>> GetUserProfileById(int userId)
+    {
+        var userProfile = await _mediator.Send(new GetUserProfileByIdCommand(new UserProfileId(userId)));
+
+        if (userProfile is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(userProfile);
+    }
+
+    /// <summary>
+    /// Create new user profile
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns>User profile</returns>
+    [HttpPost]
+    [Route("profile")]
+    [AllowAnonymous]
+    [ProducesResponseType<UserProfile>(StatusCodes.Status201Created)]
+    public async Task<ActionResult<UserProfile>> CreateUserProfile(CreateUserProfileCommand command)
+    {
+        var response = await _mediator.Send(command);
+
+        return CreatedAtAction(nameof(GetUserProfile), response);
+    }
+
+    /// <summary>
+    /// Update user profile
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns>User profile</returns>
+    [HttpPut]
+    [Route("profile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<UserProfile>(StatusCodes.Status201Created)]
+    public async Task<ActionResult<UserProfile>> UpdateUserProfile(UpdateUserProfileCommand command)
+    {
+        var response = await _mediator.Send(command);
+
+        if (response is not null)
+        {
+            return CreatedAtAction(nameof(GetUserProfile), response);
+        }
+
+        return Ok();
     }
 
     /// <summary>
