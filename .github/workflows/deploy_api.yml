@@ -79,4 +79,4 @@ jobs:
         run: docker push localhost:5000/overmoney_api
 
       - name: Restart container
-        run: docker run -rm --name overmoney_update -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once overmoney_api
+        run: docker run --rm --name overmoney_update_api -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once overmoney_api
